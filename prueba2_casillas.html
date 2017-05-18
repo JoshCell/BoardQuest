@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hello World</title>
+</head>
+  <script src="/home/joseluis/Escritorio/PROJECTO/node_modules/pixi.js/dist/pixi.min.js"></script>
+  <style>* {padding: 0; margin: 0}</style>
+<body>
+  <script type="text/javascript">
+    var app = new PIXI.Application();
+    document.body.appendChild(app.view);
+
+    // create a background...
+    var background = PIXI.Sprite.fromImage('sprites/planet.png');
+    background.width = app.renderer.width;
+    background.height = app.renderer.height;
+
+    // add background to stage...
+    app.stage.addChild(background);
+
+    // create some textures from an image path
+    var textureButton = PIXI.Texture.fromImage('sprites/CasillaBatallaModo1.png');
+    var textureButtonDown = PIXI.Texture.fromImage('sprites/CasillaBossModo2.png');
+    var textureButtonOver = PIXI.Texture.fromImage('sprites/CasillaBatallaModo2.png');
+
+
+    var buttons = [];
+
+    var buttonPositions = [
+        175, 75,
+        655, 75,
+        410, 325,
+        150, 465,
+        685, 445
+    ];
+
+    for (var i = 0; i < 5; i++) {
+
+        var button = new PIXI.Sprite(textureButton);
+        button.scale.x = 0.4;
+        button.scale.y = 0.4;
+        button.buttonMode = true;
+
+        button.anchor.set(0.5);
+        button.x = buttonPositions[i*2];
+        button.y = buttonPositions[i*2 + 1];
+
+        // make the button interactive...
+        button.interactive = true;
+        button.buttonMode = true;
+
+
+
+        button
+            // Mouse & touch events are normalized into
+            // the pointer* events for handling different
+            // button events.
+            .on('pointerdown', onButtonDown)
+            .on('pointerup', onButtonUp)
+            .on('pointerupoutside', onButtonUp)
+            .on('pointerover', onButtonOver)
+            .on('pointerout', onButtonOut)
+            .on('pointerdown', onDragStart)
+            .on('pointerup', onDragEnd)
+            .on('pointerupoutside', onDragEnd)
+            .on('pointerdown', textDisplay)
+            .on('pointermove', onDragMove);
+
+
+            // Use mouse-only events
+            // .on('mousedown', onButtonDown)
+            // .on('mouseup', onButtonUp)
+            // .on('mouseupoutside', onButtonUp)
+            // .on('mouseover', onButtonOver)
+            // .on('mouseout', onButtonOut)
+
+            // Use touch-only events
+            // .on('touchstart', onButtonDown)
+            // .on('touchend', onButtonUp)
+            // .on('touchendoutside', onButtonUp)
+
+        // add it to the stage
+        app.stage.addChild(button);
+
+        // add button to array
+        buttons.push(button);
+    }
+
+    // set some silly values...
+    //buttons[0].scale.set(1.2);
+    //buttons[2].rotation = Math.PI / 10;
+    //buttons[3].scale.set(0.8);
+    //buttons[4].scale.set(0.8,1.2);
+    //buttons[4].rotation = Math.PI;
+
+    var megaman = PIXI.Texture.fromImage('sprites/mega.png');
+    var mega = new PIXI.Sprite(megaman);
+    mega.x = 10;
+    mega.y = 10;
+    mega.scale.x = 0.4;
+    mega.scale.y = 0.4;
+    app.stage.addChild(mega);
+
+
+
+
+
+    function onButtonDown() {
+        this.isdown = true;
+        this.texture = textureButtonDown;
+        this.alpha = 1;
+    }
+
+    function onButtonUp() {
+        this.isdown = false;
+        if (this.isOver) {
+            this.texture = textureButtonOver;
+        }
+        else {
+            this.texture = textureButton;
+        }
+    }
+
+    function onButtonOver() {
+        this.isOver = true;
+        if (this.isdown) {
+            return;
+        }
+        this.texture = textureButtonOver;
+    }
+
+    function onButtonOut() {
+        this.isOver = false;
+        if (this.isdown) {
+            return;
+        }
+        this.texture = textureButton;
+    }
+
+    function onDragStart(event) {
+        // store a reference to the data
+        // the reason for this is because of multitouch
+        // we want to track the movement of this particular touch
+        this.data = event.data;
+        this.alpha = 0.5;
+        this.dragging = true;
+    }
+
+    function onDragEnd() {
+        this.alpha = 1;
+        this.dragging = false;
+        // set the interaction data to null
+        this.data = null;
+    }
+
+    function onDragMove() {
+        if (this.dragging) {
+            var newPosition = this.data.getLocalPosition(this.parent);
+            this.x = newPosition.x;
+            this.y = newPosition.y;
+        }
+    }
+
+    function textDisplay(){
+      var style = new PIXI.TextStyle({fontFamily: 'Arial', fontSize: 36, fontStyle: 'italic',
+        fontWeight: 'bold',
+        fill: ['#ffffff', '#00ff99'], // gradient
+        stroke: '#4a1850',
+        strokeThickness: 5,
+        dropShadow: true,
+        dropShadowColor: '#000000',
+        dropShadowBlur: 4,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+        wordWrap: true,
+        wordWrapWidth: 440
+      });
+      var text = new PIXI.Text("HOLY SHIT!", style);
+      var x = 200;
+      var y = 150;
+      text.x = x+5;
+      text.y = y+5;
+      var graphics = new PIXI.Graphics();
+      graphics.lineStyle(2, 0x0000FF, 1);
+      graphics.beginFill(0x0000FF, 0.25);
+      graphics.drawRoundedRect(x, y, 250, 100, 15);
+      graphics.endFill();
+      graphics.addChild(text);
+
+      app.stage.addChild(graphics);
+    }
+
+  </script>
+  </body>
+  </html>

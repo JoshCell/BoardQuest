@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hello World</title>
+</head>
+  <script src="/home/joseluis/Escritorio/PROJECTO/node_modules/pixi.js/dist/pixi.min.js"></script>
+  <style>* {padding: 0; margin: 0}</style>
+<body>
+  <script type="text/javascript">
+  // The application will create a renderer using WebGL, if possible,
+  // with a fallback to a canvas render. It will also setup the ticker
+  // and the root stage PIXI.Container.
+  var app = new PIXI.Application();
+  var renderer = PIXI.autoDetectRenderer(1200, 600);
+
+  renderer.view.style.position = "absolute";
+  renderer.view.style.display = "block";
+  renderer.autoResize = true;
+  renderer.resize(window.innerWidth, window.innerHeight);
+  renderer.view.style.border = "5px solid red";
+
+
+  // The application will create a canvas element for you that you
+  // can then insert into the DOM.
+
+  //document.body.appendChild(app.view);
+  document.body.appendChild(renderer.view);
+  var mainCont = new PIXI.Container();
+  var stage = new PIXI.Container();
+  mainCont.addChild(stage)
+  // load the texture we need
+  //var planet = PIXI.utils.TextureCache["sprites/planet.jpg"];
+  //var mega = PIXI.utils.TextureCache["sprites/planet.png"];
+  PIXI.loader
+    .add([
+      "sprites/mega.png",
+      "sprites/planet.png",
+      "sprites/CasillaBatallaModo1.png",
+      "sprites/CasillaBatallaModo2.png"
+    ])
+    .on("progress", loadProgressHandler)
+    .load(setup);
+
+    function loadProgressHandler(loader, resource){
+      console.log("loading: " + resource.url);
+      console.log("progress: " + loader.progress + "%");
+    }
+    var mega;
+    var casBat1;
+    var casBat2;
+
+    function setup(){
+      console.log("Carga completada");
+      var planet = new PIXI.Sprite(PIXI.loader.resources["sprites/planet.png"].texture);
+      //stage.addChild(planet);
+      mega = new PIXI.Sprite(PIXI.loader.resources["sprites/mega.png"].texture);
+      mega.x = 10;
+      mega.y = 10;
+
+      stage.addChild(mega);
+
+      casBat1 = new PIXI.Texture.fromImage('sprites/CasillaBatallaModo1.png');
+      casBat2 = new PIXI.Texture.fromImage('sprites/CasillaBatallaModo2.png');
+
+      //var casBat1 = new PIXI.Sprite(PIXI.loader.resources["sprites/CasillaBatalla_modo1.png"].texture);
+      //var casBat2 = new PIXI.Sprite(PIXI.loader.resources["sprites/CasillaBatalla_modo2.png"].texture);
+
+      var casillas = [];
+
+      var casBatPos = [
+        100, 100,
+        250, 250,
+        550, 350
+      ];
+
+      for(let i = 0; i < 3; i++){
+        var casilla = new PIXI.Sprite(casBat1);
+        casilla.buttonMode = true;
+        casilla.anchor.set(0.5);
+        casilla.x = casBatPos[i*2];
+        casilla.y = casBatPos[i*2 + 1];
+        casilla.interactive = true;
+        casilla.buttonMode = true;
+
+        casilla
+              .on('pointerdown', onCasDown)
+              .on('pointerup', onCasUp)
+              .on('pointerupoutside', onCasUp)
+              .on('pointerover', onCasOver)
+              .on('pointerout', onCasOut);
+
+        app.stage.addChild(casilla);
+
+        casillas.push(casilla);
+      }
+
+
+      function onCasDown() {
+          this.isdown = true;
+          this.texture = casBat2;
+          this.alpha = 1;
+      }
+
+      function onCasUp() {
+          this.isdown = false;
+          if (this.isOver) {
+              this.texture = casBat2;
+          }
+          else {
+              this.texture = casBat1;
+          }
+      }
+
+      function onCasOver() {
+          this.isOver = true;
+          if (this.isdown) {
+              return;
+          }
+          this.texture = casBat2;
+      }
+
+      function onCasOut() {
+          this.isOver = false;
+          if (this.isdown) {
+              return;
+          }
+          this.texture = casBat2;
+      }
+
+          gameLoop();
+    }
+
+    function gameLoop(){
+      requestAnimationFrame(gameLoop);
+      mega.x +=2;
+      mega.y +=1;
+      mega.rotation += 1;
+      mega.anchor.x = 0.5;
+      mega.anchor.y = 0.5;
+
+      //dice.rotation -= 0.5;
+      //dice.interactive = true;
+
+
+
+
+
+      renderer.render(mainCont);
+    }
+
+
+
+  </script>
+</body>
+</html>
