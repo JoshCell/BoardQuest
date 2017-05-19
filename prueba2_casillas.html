@@ -12,12 +12,52 @@
     document.body.appendChild(app.view);
 
     // create a background...
-    var background = PIXI.Sprite.fromImage('sprites/planet.png');
+    var background = PIXI.Sprite.fromImage('sprites/mapa.jpeg');
     background.width = app.renderer.width;
     background.height = app.renderer.height;
 
     // add background to stage...
     app.stage.addChild(background);
+
+    PIXI.loader
+    .add("items", "sprites/Items.png")
+    .load(setup);
+
+    var sp;
+
+    function setup(){
+      var rect;
+
+      var rect = new PIXI.Rectangle(0.5,0.5,25,25);
+      var texture = PIXI.loader.resources["items"].texture;
+      texture.frame = rect;
+      sp = new PIXI.Sprite(texture);
+      sp.x = 750;
+      sp.y = 50;
+      sp.scale.x=2;
+      sp.scale.y=2;
+      app.stage.addChild(sp);
+      
+      //var texture = PIXI.loader.resources["items"].texture;
+      //texture.frame = rect;
+      //sp = new PIXI.Sprite(texture);
+      //sp.x = 750;
+      //sp.y = 200;
+      //sp.scale.x = 2;
+      //sp.scale.y = 2;
+
+      //app.stage.addChild(sp);
+
+    }
+
+    //Textura de items
+    //var atlasItems = PIXI.loader.resources['sprites/items_map.json'].texture;
+    //var esp_cob = new PIXI.Sprite(atlasItems["espada de cobre"]);
+
+    //esp_cob.x = 350;
+    //esp_cob.y = 250;
+
+    //app.stage.addChild(esp_cob);
 
     // create some textures from an image path
     var textureButton = PIXI.Texture.fromImage('sprites/CasillaBatallaModo1.png');
@@ -25,14 +65,15 @@
     var textureButtonOver = PIXI.Texture.fromImage('sprites/CasillaBatallaModo2.png');
 
 
+
     var buttons = [];
 
     var buttonPositions = [
-        175, 75,
-        655, 75,
-        410, 325,
-        150, 465,
-        685, 445
+        135, 75,
+        355, 135,
+        380, 375,
+        260, 465,
+        585, 395
     ];
 
     for (var i = 0; i < 5; i++) {
