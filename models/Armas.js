@@ -6,6 +6,9 @@ mongoose.connect("mongodb://localhost/database");
 var armas = {ID_Num:Number, Nombre:String, Clase:String, Ataque:Number, Precio:Number, Descripcion:String, Url:String};
 var armas_schema = new Schema(armas);
 var arms = mongoose.model("Armas", armas_schema);
+
+// ARMAS CABALLERO
+
 var nueva = new arms({ID_Num:001, Nombre:"espada de cobre", Clase:"Caballero", Ataque:15, Precio:200, Descripcion:"Espada de cobre, débil pero corta", Url:""});
 nueva.save(function(err){ console.log(err); });
 var nueva = new arms({ID_Num:002, Nombre:"espada de hierro", Clase:"Caballero", Ataque:18, Precio:300, Descripcion:"Espada tradicional para caballeros iniciados", Url:""});
@@ -17,6 +20,7 @@ nueva.save(function(err){ console.log(err); });
 var nueva = new arms({ID_Num:005, Nombre:"estoque oscuro", Clase:"Caballero", Ataque:35, Precio:1200, Descripcion:"Espada mitica usada según la leyenda por un principe maldito", Url:""});
 nueva.save(function(err){ console.log(err); });
 
+// ARMAS ARQUERO
 
 var nueva = new arms({ID_Num:0011, Nombre:"arco corto", Clase:"Arquero", Ataque:13, Precio:180, Descripcion:"Arco estándar para arqueros iniciados", Url:""});
 nueva.save(function(err){ console.log(err); });
@@ -29,6 +33,7 @@ nueva.save(function(err){ console.log(err); });
 var nueva = new arms({ID_Num:0015, Nombre:"arco élfico", Clase:"Arquero", Ataque:34, Precio:1140, Descripcion:"Fabricado por maestros arqueros en un bosque mitológico", Url:""});
 nueva.save(function(err){ console.log(err); });
 
+// ARMAS GUERRERO
 
 var nueva = new arms({ID_Num:021, Nombre:"hacha de acero", Clase:"Guerrero", Ataque:18, Precio:250, Descripcion:"Hacha tradicional para guerreros iniciados", Url:""});
 nueva.save(function(err){ console.log(err); });
@@ -41,6 +46,7 @@ nueva.save(function(err){ console.log(err); });
 var nueva = new arms({ID_Num:025, Nombre:"desgarradora", Clase:"Guerrero", Ataque:57, Precio:1550, Descripcion:"Hacha de doble filo extremadamente pesada", Url:""});
 nueva.save(function(err){ console.log(err); });
 
+// ARMAS MAGO
 
 var nueva = new arms({ID_Num:031, Nombre:"vara de perla", Clase:"Mago", Ataque:10, Precio:160, Descripcion:"Vara tallada con una perla en el centro", Url:""});
 nueva.save(function(err){ console.log(err); });
@@ -53,6 +59,7 @@ nueva.save(function(err){ console.log(err); });
 var nueva = new arms({ID_Num:035, Nombre:"flauta encantadora", Clase:"Mago", Ataque:25, Precio:670, Descripcion:"instrumento cuyas notas invoca las fuerzas de los elementos", Url:""});
 nueva.save(function(err){ console.log(err); });
 
+// ARMAS LADRON
 
 var nueva = new arms({ID_Num:041, Nombre:"daga corta", Clase:"Ladron", Ataque:14, Precio:175, Descripcion:"Daga tradicional para ladrones iniciados", Url:""});
 nueva.save(function(err){ console.log(err); });
