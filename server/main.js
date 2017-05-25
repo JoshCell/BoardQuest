@@ -2,12 +2,14 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var mongoose = require('mongoose');
+var cas = require('../models/index').Cas;
+var pixi = require('pixi');
+//var mongoose = require('mongoose');
 //var routes = require('./routes/index');
 //var users = require('./routes/users');
 //var models = require('./models');
 //var path = require('path');
-var MongoClient = require('mongodb').MongoClient, assert = require('assert');
+//var MongoClient = require('mongodb').MongoClient, assert = require('assert');
 
 var urlmongo = 'mongodb://localhost:27017/test';
 
@@ -21,7 +23,7 @@ MongoClient.connect(urlmongo, function(err, db){
 });
 
 // INSERTAR DOCUMENTOS EN MONGODB
-
+/*
 var insertDocuments = function(db, callback) {
 	var collection = db.collection('users');
 	collection.insertMany([
@@ -34,9 +36,10 @@ var insertDocuments = function(db, callback) {
 		callback(result);
 	});
 }
+*/
 
 
-
+/*
 mongoose.connect('mongodb://localhost:27017/test');
 
 mongoose.model('users',{name: String});
@@ -80,7 +83,7 @@ io.on('connection', function(socket){
 		io.sockets.emit('messages', messages);
 	});
 });
-
+*/
 server.listen(8080, function() {
 console.log('Servidor corriendo en http://localhost:8080');
 });
