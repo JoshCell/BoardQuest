@@ -8,36 +8,136 @@
   <style>* {padding: 0; margin: 0}</style>
 <body>
   <script type="text/javascript">
-    var app = new PIXI.Application();
+    var app = new PIXI.Application(1850,850);
+    app.backgroundColor = 0x061639;
     document.body.appendChild(app.view);
 
+    //var mapzone = PIXI.autoDetectRenderer(700, 500);
+
     // create a background...
-    var background = PIXI.Sprite.fromImage('sprites/mapa.jpeg');
-    background.width = app.renderer.width;
-    background.height = app.renderer.height;
+    //var back = PIXI.Sprite.fromImage('sprites/mapa.jpeg');
+    //var mapzone = new PIXI.DisplayObjectContainer(700,500);
+
+    //var background = PIXI.Sprite.fromImage('sprites/mapa.png');
+
+    //background.width = app.renderer.width;
+    //background.height = app.renderer.height;
 
     // add background to stage...
-    app.stage.addChild(background);
+    //mapzone.addChild(background);
+    //app.stage.addChild(mapzone);
+    //app.stage.addChild(back);
+
+
+    /*PIXI.loader
+    .add([
+      "items", "sprites/Items.png",
+      "mapa", "sprites/mapa.png"
+    ])
+    .load(setup);
+
+    function setup(){
+      /*VENTANA MAPA*/
+      //var mapzone = new PIXI.Rectangle(0,0, 700, 500);
+      //var texture_map = PIXI.loader.resources["mapa"].texture_map;
+      //texture_map.frame = mapzone;
+      //var mapamundi = new PIXI.Sprite(texture);
+      //app.stage.addChild(mapzone);
+      //mapzone.addChild(mapamundi);*/
+
+
 
     PIXI.loader
     .add("items", "sprites/Items.png")
+    .add("mapa", "sprites/mapa.png")
+    .add("batalla", "sprites/CasillaBatallaModo1.png")
     .load(setup);
 
-    var sp;
-
     function setup(){
-      var rect;
+      /*VENTANA MAPA*/
+      var mapview = new PIXI.Container(1200,700);
+      app.stage.addChild(mapview);
+      var mapzone = new PIXI.Rectangle(0,0, 900, 500);
+      //mapview.addChild(mapzone);
+      var texture_map = PIXI.loader.resources["mapa"].texture;
+      texture_map.frame = mapzone;
+      var mapamundi = new PIXI.Sprite(texture_map);
+      //mapview.mask = mapzone;
+      //mapamundi = new PIXI.Bounds(300,200,500,350);
+      //mapzone.style.border = "5px solid red";
 
-      var rect = new PIXI.Rectangle(0.5,0.5,25,25);
-      var texture = PIXI.loader.resources["items"].texture;
-      texture.frame = rect;
-      sp = new PIXI.Sprite(texture);
-      sp.x = 750;
-      sp.y = 50;
-      sp.scale.x=2;
-      sp.scale.y=2;
-      app.stage.addChild(sp);
-      
+      mapview.addChild(mapamundi);
+      var texture_batalla = PIXI.loader.resources["batalla"].texture;
+      var casilla = new PIXI.Sprite(texture_batalla);
+      casilla.x = 825;
+      casilla.y = 260;
+      casilla.scale.x = 0.4;
+      casilla.scale.y = 0.4;
+      casilla.buttonMode = true;
+      casilla.interactive = true;
+      casilla.buttonMode = true;
+
+      mapview.addChild(casilla);
+
+
+
+
+
+      //var textureButton = PIXI.Texture.fromImage('sprites/CasillaBatallaModo1.png');
+      //var textureButtonDown = PIXI.Texture.fromImage('sprites/CasillaBossModo2.png');
+      //var textureButtonOver = PIXI.Texture.fromImage('sprites/CasillaBatallaModo2.png');
+
+
+
+
+      /*var rect;
+      var t = {};
+      var pos;
+      var cont = [];
+      for(let i=0;i<5;i++){
+        pos = i*25+0.5;
+        rect = new PIXI.Rectangle(pos,0.5,25,25);
+        var texture = PIXI.loader.resources["items"].texture;
+        texture.frame = rect;
+        sp = new PIXI.Sprite(texture);
+        sp.x = 750;
+        sp.y = i*50;
+        sp.scale.x=2;
+        sp.scale.y=2
+        cont[i]=sp;
+        //grid();
+      }
+      for(i=0;i<cont.length;i++){
+        //alert(cont[i].y);
+
+      }
+app.stage.addChild(cont[0]);
+app.stage.addChild(cont[1]);*/
+      /*function grid(){
+        var g=[];
+        for(var i = 0; i<5; i++){
+          g[i] = drawre();
+          g[i].y = 50*i;
+          g[i].x = 750;
+          g[i].scale.x=2;
+          g[i].scale.y=2;
+          app.stage.addChild(g[i]);
+        }
+
+      }
+
+      function drawre(){
+        //var c = j*i+0.5;
+        var rect = new PIXI.Graphics();
+        var texture = PIXI.loader.resources["items"].texture;
+        rect.drawRect(25,25,25,25);
+        texture.frame = rect;
+        var sp = new PIXI.Sprite(texture);
+
+        return sp;*/
+
+
+
       //var texture = PIXI.loader.resources["items"].texture;
       //texture.frame = rect;
       //sp = new PIXI.Sprite(texture);
@@ -90,6 +190,16 @@
         // make the button interactive...
         button.interactive = true;
         button.buttonMode = true;
+
+        //BUSCAR CASILLA
+
+        /*socket.on("buscar.casilla", function(id){
+          Cas.find({ID_num:id}, function(err, casnum){
+            casnum.map(function(elem, index){
+
+            })
+          })
+        })*/
 
 
 
