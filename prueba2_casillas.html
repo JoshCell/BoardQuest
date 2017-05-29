@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hello World</title>
+  <title>BOARDQUEST</title>
 </head>
   <script src="/home/joseluis/Escritorio/PROJECTO/node_modules/pixi.js/dist/pixi.min.js"></script>
   <style>* {padding: 0; margin: 0}</style>
@@ -51,37 +51,198 @@
     .add("items", "sprites/Items.png")
     .add("mapa", "sprites/mapa.png")
     .add("batalla", "sprites/CasillaBatallaModo1.png")
+    .add("batalla2", "sprites/CasillaBatallaModo2.png")
+    .add("boss", "sprites/CasillaBossModo1.png")
+    .add("boss2", "sprites/CasillaBossModo2.png")
+    .add("evento", "sprites/CasillaEventoModo1.png")
+    .add("evento2", "sprites/CasillaEventoModo2.png")
+    .add("mision", "sprites/CasillaMisionModo1.png")
+    .add("mision2", "sprites/CasillaMisionModo2.png")
+    .add("fondoBatalla", "sprites/batallaFondo.png")
     .load(setup);
 
     function setup(){
+
+
       /*VENTANA MAPA*/
-      var mapview = new PIXI.Container(1200,700);
+      var mapview = new PIXI.Container();
       app.stage.addChild(mapview);
-      var mapzone = new PIXI.Rectangle(0,0, 900, 500);
+
+      //var mapzone = new PIXI.Rectangle(0,0, 900, 700);
       //mapview.addChild(mapzone);
       var texture_map = PIXI.loader.resources["mapa"].texture;
-      texture_map.frame = mapzone;
+      //texture_map.frame = mapzone;
       var mapamundi = new PIXI.Sprite(texture_map);
+      mapamundi.interactive = true;
+      mapamundi.buttonMode = true;
       //mapview.mask = mapzone;
       //mapamundi = new PIXI.Bounds(300,200,500,350);
       //mapzone.style.border = "5px solid red";
+      /*mapamundi
+      .on('pointerdown', onDragStart)
+      .on('pointerup', onDragEnd)
+      .on('pointerupoutside', onDragEnd)
+      .on('pointermove', onDragMove);*/
+
+      var sp = new PIXI.Graphics();
+      mapview.addChild(sp);
+      sp.x = 0;
+      sp.y = 0;
+      mapview.mask = sp;
+      app.ticker.add(function(){
+        sp.clear();
+        sp.beginFill(0x8bc5ff, 0.4);
+        sp.moveTo(900,0);
+        sp.lineTo(900, 700);
+        sp.lineTo(0, 700);
+        sp.lineTo(0,0);
+      })
+
+
 
       mapview.addChild(mapamundi);
       var texture_batalla = PIXI.loader.resources["batalla"].texture;
-      var casilla = new PIXI.Sprite(texture_batalla);
-      casilla.x = 825;
-      casilla.y = 260;
-      casilla.scale.x = 0.4;
-      casilla.scale.y = 0.4;
-      casilla.buttonMode = true;
-      casilla.interactive = true;
-      casilla.buttonMode = true;
+      var texture_batalla2 = PIXI.loader.resources["batalla2"].texture;
+      var texture_boss = PIXI.loader.resources["boss"].texture;
+      var texture_boss2 = PIXI.loader.resources["boss2"].texture;
+      var texture_evento = PIXI.loader.resources["evento"].texture;
+      var texture_evento2 = PIXI.loader.resources["evento2"].texture;
+      var texture_mision = PIXI.loader.resources["mision"].texture;
+      var texture_mision2 = PIXI.loader.resources["mision2"].texture;
 
-      mapview.addChild(casilla);
+      var casillas_batalla = [];
+      var casillas_boss = [];
+      var casillas_evento = [];
+      var casillas_mision = [];
+
+      var casilla_batallaPositions = [
+          850, 275,
+          850, 395,
+          850, 625,
+          970, 275,
+      ];
+
+      var casilla_bossPositions = [
+          625, 510,
+      ];
+
+      var casilla_eventoPositions = [
+          730, 510,
+          510, 625,
+      ];
+
+      var casilla_misionPositions = [
+          625, 625,
+          850, 510,
+      ];
 
 
+      for (let i = 0; i < casilla_batallaPositions.length*2; i++) {
+          var casilla_batalla = new PIXI.Sprite(texture_batalla);
+          casilla_batalla.scale.x = 0.4;
+          casilla_batalla.scale.y = 0.4;
+          //casilla_batalla.buttonMode = true;
+          casilla_batalla.anchor.set(0.5);
+          casilla_batalla.x = casilla_batallaPositions[i*2];
+          casilla_batalla.y = casilla_batallaPositions[i*2 + 1];
+          // make the button interactive...
+          //casilla_batalla.interactive = true;
+          //casilla_batalla.buttonMode = true;
+          // add it to the stage
+          mapview.addChild(casilla_batalla);
+          // add button to array
+          casillas_batalla.push(casilla_batalla);
+      }
+
+      for(let i = 0; i<casilla_bossPositions.length*2; i++){
+        var casilla_boss = new PIXI.Sprite(texture_boss);
+        casilla_boss.scale.x = 0.4;
+        casilla_boss.scale.y = 0.4;
+        //casilla_batalla.buttonMode = true;
+        casilla_boss.anchor.set(0.5);
+        casilla_boss.x = casilla_bossPositions[i*2];
+        casilla_boss.y = casilla_bossPositions[i*2 + 1];
+        // make the button interactive...
+        //casilla_batalla.interactive = true;
+        //casilla_batalla.buttonMode = true;
+        // add it to the stage
+        mapview.addChild(casilla_boss);
+        // add button to array
+        casillas_boss.push(casilla_boss);
+      }
 
 
+      for(let i = 0; i<casilla_eventoPositions.length*2; i++){
+        var casilla_evento = new PIXI.Sprite(texture_evento);
+        casilla_evento.scale.x = 0.4;
+        casilla_evento.scale.y = 0.4;
+        //casilla_batalla.buttonMode = true;
+        casilla_evento.anchor.set(0.5);
+        casilla_evento.x = casilla_eventoPositions[i*2];
+        casilla_evento.y = casilla_eventoPositions[i*2 + 1];
+        // make the button interactive...
+        //casilla_batalla.interactive = true;
+        //casilla_batalla.buttonMode = true;
+        // add it to the stage
+        mapview.addChild(casilla_evento);
+        // add button to array
+        casillas_evento.push(casilla_evento);
+      }
+
+      for(let i = 0; i<casilla_misionPositions.length*2; i++){
+        var casilla_mision = new PIXI.Sprite(texture_mision);
+        casilla_mision.scale.x = 0.4;
+        casilla_mision.scale.y = 0.4;
+        //casilla_batalla.buttonMode = true;
+        casilla_mision.anchor.set(0.5);
+        casilla_mision.x = casilla_misionPositions[i*2];
+        casilla_mision.y = casilla_misionPositions[i*2 + 1];
+        // make the button interactive...
+        //casilla_batalla.interactive = true;
+        //casilla_batalla.buttonMode = true;
+        // add it to the stage
+        mapview.addChild(casilla_mision);
+        // add button to array
+        casillas_mision.push(casilla_mision);
+      }
+
+      //VENTANA INVENTARIO
+
+      //var inv = new PIXI.Container(1200,100);
+      //app.stage.addChild(mapview);
+      //var invzone = new PIXI.Rectangle(0,0, 900, 500);
+      var inv = new PIXI.Graphics();
+      inv.lineStyle(2, 0x0000FF, 1);
+      inv.beginFill(0x0000FF, 0.60);
+      inv.drawRoundedRect(25, 720, 875, 100, 15);
+      inv.endFill();
+      //graphics.addChild();
+
+      app.stage.addChild(inv);
+
+      //VENTANA MENÚ DE BATALLA
+
+      var menuBatalla = new PIXI.Graphics();
+      menuBatalla.lineStyle(2, 0x0000FF, 1);
+      menuBatalla.beginFill(0x0000FF, 0.60);
+      menuBatalla.drawRoundedRect(925, 660, 900, 170, 15);
+      menuBatalla.endFill();
+      //graphics.addChild();
+
+      app.stage.addChild(menuBatalla);
+
+
+      //VENTANA BATALLA
+      var battleview = new PIXI.Container();
+      app.stage.addChild(battleview);
+      var battlezone = new PIXI.Rectangle(200,0, 900, 640);
+      //mapview.addChild(mapzone);
+      var texture_battle = PIXI.loader.resources["fondoBatalla"].texture;
+      texture_battle.frame = battlezone;
+      var fondoBattle = new PIXI.Sprite(texture_battle);
+      fondoBattle.x = 925;
+      fondoBattle.y = 0;
+      battleview.addChild(fondoBattle);
 
       //var textureButton = PIXI.Texture.fromImage('sprites/CasillaBatallaModo1.png');
       //var textureButtonDown = PIXI.Texture.fromImage('sprites/CasillaBossModo2.png');
@@ -148,7 +309,7 @@ app.stage.addChild(cont[1]);*/
 
       //app.stage.addChild(sp);
 
-    }
+  //  }
 
     //Textura de items
     //var atlasItems = PIXI.loader.resources['sprites/items_map.json'].texture;
@@ -160,7 +321,7 @@ app.stage.addChild(cont[1]);*/
     //app.stage.addChild(esp_cob);
 
     // create some textures from an image path
-    var textureButton = PIXI.Texture.fromImage('sprites/CasillaBatallaModo1.png');
+    /*var textureButton = PIXI.Texture.fromImage('sprites/CasillaBatallaModo1.png');
     var textureButtonDown = PIXI.Texture.fromImage('sprites/CasillaBossModo2.png');
     var textureButtonOver = PIXI.Texture.fromImage('sprites/CasillaBatallaModo2.png');
 
@@ -190,7 +351,7 @@ app.stage.addChild(cont[1]);*/
         // make the button interactive...
         button.interactive = true;
         button.buttonMode = true;
-
+*/
         //BUSCAR CASILLA
 
         /*socket.on("buscar.casilla", function(id){
@@ -203,11 +364,11 @@ app.stage.addChild(cont[1]);*/
 
 
 
-        button
+      //  button
             // Mouse & touch events are normalized into
             // the pointer* events for handling different
             // button events.
-            .on('pointerdown', onButtonDown)
+          /*  .on('pointerdown', onButtonDown)
             .on('pointerup', onButtonUp)
             .on('pointerupoutside', onButtonUp)
             .on('pointerover', onButtonOver)
@@ -218,7 +379,7 @@ app.stage.addChild(cont[1]);*/
             .on('pointerdown', textDisplay)
             .on('pointermove', onDragMove);
 
-
+*/
             // Use mouse-only events
             // .on('mousedown', onButtonDown)
             // .on('mouseup', onButtonUp)
@@ -232,10 +393,10 @@ app.stage.addChild(cont[1]);*/
             // .on('touchendoutside', onButtonUp)
 
         // add it to the stage
-        app.stage.addChild(button);
+      //  app.stage.addChild(button);
 
         // add button to array
-        buttons.push(button);
+        //buttons.push(button);
     }
 
     // set some silly values...
@@ -245,14 +406,14 @@ app.stage.addChild(cont[1]);*/
     //buttons[4].scale.set(0.8,1.2);
     //buttons[4].rotation = Math.PI;
 
-    var megaman = PIXI.Texture.fromImage('sprites/mega.png');
+  /*  var megaman = PIXI.Texture.fromImage('sprites/mega.png');
     var mega = new PIXI.Sprite(megaman);
     mega.x = 10;
     mega.y = 10;
     mega.scale.x = 0.4;
     mega.scale.y = 0.4;
     app.stage.addChild(mega);
-
+*/
 
 
 
